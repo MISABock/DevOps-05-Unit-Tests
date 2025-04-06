@@ -19,5 +19,12 @@ public class StringCalculatorTest {
     int result = calculator.add("1");
     assertEquals(1, result);
 }
+    @Test
+    void testTwoNumbersAreSummed() {
+        StringCalculator calculator = new StringCalculator();
+        int result = calculator.add("1,2");
+        assertEquals(3, result);
+    }
+
 
 }
