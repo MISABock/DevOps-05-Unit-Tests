@@ -12,4 +12,12 @@ public class StringCalculatorTest {
         int result = calculator.add("");
         assertEquals(0, result);
     }
+
+    @Test
+    void testSingleNumberReturnsThatNumber() {
+    StringCalculator calculator = new StringCalculator();
+    int result = calculator.add("1");
+    assertEquals(1, result);
+}
+
 }
