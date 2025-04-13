@@ -18,7 +18,7 @@ public class StringCalculator {
             List<String> delimiters = new ArrayList<>();
 
             if (delimiterPart.startsWith("[")) {
-                // Tolerant gegenüber fehlenden schließenden Klammern
+                // Mehrere Delimiter mit oder ohne schließende Klammern
                 int i = 0;
                 while (i < delimiterPart.length()) {
                     if (delimiterPart.charAt(i) == '[') {
@@ -27,7 +27,7 @@ public class StringCalculator {
                         int end = delimiterPart.indexOf(']', start);
 
                         if (end == -1 || (nextBracket != -1 && nextBracket < end)) {
-                            // Kein schließendes ] oder ein neuer [ davor
+                            // Kein schließendes ] oder ein neuer [ kommt vorher
                             end = nextBracket == -1 ? delimiterPart.length() : nextBracket;
                         }
 
@@ -41,6 +41,7 @@ public class StringCalculator {
                     }
                 }
             } else {
+                // Einfache Delimiter (z. B. //***\n) auch ohne []
                 delimiters.add(Pattern.quote(delimiterPart));
             }
 
@@ -60,7 +61,7 @@ public class StringCalculator {
                 } else if (number <= 1000) {
                     sum += number;
                 }
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException ignored) {
                 // Ignoriere unparsebare Teile
             }
         }
