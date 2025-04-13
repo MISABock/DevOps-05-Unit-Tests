@@ -56,5 +56,22 @@ public class StringCalculatorTest {
         assertTrue(thrown.getMessage().contains("Negatives not allowed: -2"));
     }
     
-    
+    @Test
+    void testMultipleNegativeNumbersThrowExceptionWithAllNumbers() {
+        StringCalculator calculator = new StringCalculator();
+        IllegalArgumentException thrown = assertThrows(
+            IllegalArgumentException.class,
+            () -> calculator.add("1,-2,-5"),
+            "Expected exception for multiple negative numbers"
+        );
+        assertEquals("Negatives not allowed: -2,-5", thrown.getMessage());
+    }
+    @Test
+    void testMultipleDelimiters() {
+        StringCalculator calculator = new StringCalculator();
+        int result = calculator.add("//[*][%]\n1*2%3");
+        assertEquals(6, result);
+    }
+
+
 }
