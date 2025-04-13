@@ -80,6 +80,12 @@ public class StringCalculatorTest {
     }
     
     
+    @Test
+    void testUnsupportedDelimiterFormatFails() {
+        StringCalculator calculator = new StringCalculator();
+        int result = calculator.add("//***\n1***2***3"); // Kein []-Block für den Delimiter!
+        assertEquals(6, result); // Sollte fe
     
+
 
 }
