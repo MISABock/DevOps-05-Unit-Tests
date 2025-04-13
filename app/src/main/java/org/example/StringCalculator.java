@@ -12,9 +12,28 @@ public class StringCalculator {
         String delimiter = "[,\n]";
         if (numbers.startsWith("//")) {
             int delimiterIndex = numbers.indexOf("\n");
-            String customDelimiter = numbers.substring(2, delimiterIndex);
-            delimiter = Pattern.quote(customDelimiter);
+            String delimiterPart = numbers.substring(2, delimiterIndex);
             numbers = numbers.substring(delimiterIndex + 1);
+
+            List<String> delimiters = new ArrayList<>();
+
+            if (delimiterPart.startsWith("[") && delimiterPart.endsWith("]")) {
+                // Mehrere (auch lange) Delimiter
+                int i = 0;
+                while (i < delimiterPart.length()) {
+                    int start = delimiterPart.indexOf("[", i);
+                    int end = delimiterPart.indexOf("]", start);
+                    if (start == -1 || end == -1) break;
+                    String del = delimiterPart.substring(start + 1, end);
+                    delimiters.add(Pattern.quote(del));
+                    i = end + 1;
+                }
+            } else {
+                // Ein einzelner kurzer Delimiter
+                delimiters.add(Pattern.quote(delimiterPart));
+            }
+
+            delimiter = String.join("|", delimiters);
         }
 
         String[] parts = numbers.split(delimiter);
@@ -22,6 +41,7 @@ public class StringCalculator {
         List<Integer> negatives = new ArrayList<>();
 
         for (String part : parts) {
+            if (part.isEmpty()) continue; // Sicherheit gegen leere Teile
             int number = Integer.parseInt(part);
             if (number < 0) {
                 negatives.add(number);
@@ -32,7 +52,7 @@ public class StringCalculator {
 
         if (!negatives.isEmpty()) {
             throw new IllegalArgumentException("Negatives not allowed: " +
-                String.join(",", negatives.stream().map(String::valueOf).toList()));
+                    String.join(",", negatives.stream().map(String::valueOf).toList()));
         }
 
         return sum;
