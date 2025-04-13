@@ -72,6 +72,14 @@ public class StringCalculatorTest {
         int result = calculator.add("//[*][%]\n1*2%3");
         assertEquals(6, result);
     }
-
+    @Test
+    void testDelimiterWithoutClosingBracketFails() {
+        StringCalculator calculator = new StringCalculator();
+        int result = calculator.add("//[***[%%%]\n1***2%%%3");
+        assertEquals(6, result); // Sollte fehlschlagen: fehlende schließende Klammer bei [***[%%%]
+    }
+    
+    
+    
 
 }
